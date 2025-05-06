@@ -110,7 +110,7 @@ def get_by_category(category):
     
     
     if not expenses:
-        return jsonify({"msg":"Nothing in this category"})
+        return jsonify({"msg":"Nothing in this category"}), 404
     
     else:
 
