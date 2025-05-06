@@ -89,13 +89,42 @@ def delete_expense(expense_id):
 #DELETE all expenses
 @expense_bp.route('/expenses', methods=['DELETE'])
 @jwt_required()
-def delet5e_all():
+def delete_all():
     user_id=int(get_jwt_identity())
     expenses = Expense.query.filter_by(user_id=user_id).all()
     if expenses:
-        for i in expenses:
-            db.session.delete(i)
+        for e in expenses:
+            db.session.delete(e)
             db.session.commit()
         return jsonify({"msg":"All expenses were deleted"})
     else:
-        return jsonify({"msg":"No expenses to delete"})
+        return jsonify({"msg":"No expenses to delete"}),200
+    
+
+#GET all by category
+@expense_bp.route('/expenses/<string:category>', methods=['GET'])
+@jwt_required()
+def get_by_category(category):
+    user_id=int(get_jwt_identity())
+    expenses=Expense.query.filter_by(user_id=user_id, category=category).all()
+    
+    
+    if not expenses:
+        return jsonify({"msg":"Nothing in this category"})
+    
+    else:
+
+        result=[]
+
+        for e in expenses:
+
+            result.append({
+                'id': e.id,
+                'amount': e.amount,
+                'category': e.category,
+                'description': e.description,
+                'date': e.date.strftime('%Y-%m-%d')
+            })
+        
+        return jsonify(result), 200
+    
