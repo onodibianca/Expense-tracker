@@ -26,7 +26,9 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"msg": "User registered successfully"}), 201
+    access_token = create_access_token(identity=str(new_user.id))
+
+    return jsonify({"access_token": access_token, "msg": "Registered succesfully!"}),20
 
 #LOGIN
 @auth_bp.route('/login', methods=['POST'])
@@ -47,7 +49,8 @@ def login():
         return jsonify({"msg": "Invalid username or password"}), 401
 
     access_token = create_access_token(identity=str(user.id))
-    return jsonify(access_token=access_token), 200
+
+    return jsonify({"access_token": access_token, "msg": "Logged in!"}),200
 
 #DELETE account
 @auth_bp.route('/delete', methods=['DELETE'])
