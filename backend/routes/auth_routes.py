@@ -28,7 +28,7 @@ def register():
 
     access_token = create_access_token(identity=str(new_user.id))
 
-    return jsonify({"access_token": access_token, "msg": "Registered succesfully!"}),20
+    return jsonify({"access_token": access_token, "msg": "Registered succesfully!"}),200
 
 #LOGIN
 @auth_bp.route('/login', methods=['POST'])
